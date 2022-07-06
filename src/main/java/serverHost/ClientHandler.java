@@ -17,11 +17,10 @@ public class ClientHandler implements Runnable{
     SignInRepo SIRepo;
     SignUpRepo SURepo;
     Server server;
-    boolean inQueue = false, inBattle = false;
+    boolean inQueue = false, inBattle = false, attacking = false;
     String inputFromPlayer;
 
     public ClientHandler(Server server, Socket newPlayerJoined) {
-
         try {
             this.socket = newPlayerJoined;
             SIRepo = new SignInRepo();
@@ -92,7 +91,7 @@ public class ClientHandler implements Runnable{
                     inputFromPlayer = reader.readLine();
                     if (inputFromPlayer.equals(Cipher.cipher_INQUEUE)){
                         inQueue = true;
-                        System.out.println(user.getUsername() + "queueing...");
+                        System.out.println(user.getUsername() + " queueing...");
                     }
 
                 }
@@ -105,7 +104,7 @@ public class ClientHandler implements Runnable{
                                 writer.flush();
 
                                 inBattle = true;
-                                System.out.println(user.getUsername() + "coop successful");
+                                System.out.println(user.getUsername() + " coop successful");
                                 writer.write(server.players.get(i).user.getUsername());
                                 writer.newLine();
                                 writer.flush();
@@ -114,13 +113,49 @@ public class ClientHandler implements Runnable{
 
                     }
                     else{// IN BATTLE
-                        for(int i = 0 ; i < server.players.size(); ++i){
+                        String getAtkPermission = reader.readLine();
+                        if(getAtkPermission.equals(Cipher.cipher_ATTACK_PERMISSIONS)){
+                            attacking = true;
+                            for(int i = 0 ; i < server.players.size(); ++i){
 
-                            if(server.players.get(i).inQueue && !server.players.get(i).user.getUsername().equals( this.user.getUsername())){
-                                server.players.get(i).writer.write( inputFromPlayer);
-                                server.players.get(i).writer.newLine();
-                                server.players.get(i).writer.flush();
+                                if(!server.players.get(i).user.getUsername().equals( this.user.getUsername())){
+                                    if(!server.players.get(i).attacking) {
+                                        server.players.get(i).writer.write(Cipher.cipher_ENEMY_ACTION + Cipher.cipher_ATTACK_FAIL);
+                                        server.players.get(i).writer.newLine();
+                                        server.players.get(i).writer.flush();
+
+                                        writer.write(Cipher.cipher_SELF_ACTION + Cipher.cipher_ATTACK_FAIL);
+                                        writer.newLine();
+                                        writer.flush();
+
+                                    }
+                                    else {
+                                        server.players.get(i).writer.write(Cipher.cipher_ENEMY_ACTION + Cipher.cipher_ATTACK_SUCCESS);
+                                        server.players.get(i).writer.newLine();
+                                        server.players.get(i).writer.flush();
+
+                                        writer.write(Cipher.cipher_SELF_ACTION + Cipher.cipher_ATTACK_SUCCESS);
+                                        writer.newLine();
+                                        writer.flush();
+                                    }
+                                }
                             }
+                        }
+                        else if(getAtkPermission.equals(Cipher.cipher_NORMAL)) {
+                            for (int i = 0; i < server.players.size(); ++i) {
+                                if(!server.players.get(i).user.getUsername().equals( this.user.getUsername())){
+                                    attacking = false;
+                                    server.players.get(i).writer.write(Cipher.cipher_ENEMY_ACTION + Cipher.cipher_NORMAL);
+                                    server.players.get(i).writer.newLine();
+                                    server.players.get(i).writer.flush();
+                                }
+                            }
+                        }
+                        else if(getAtkPermission.equals(Cipher.cipher_ENDGAME)){
+                            attacking = false;
+                            inQueue = false;
+                            inBattle = false;
+                            System.out.println(user.getUsername() + " out game");
                         }
                     }
                 }
