@@ -15,7 +15,7 @@ public class FingerBattle extends JFrame {
         this.user = user;
         this.socket = player;
         initFrame();
-        initComponents(user);
+        initComponents();
         addComponent();
     }
 
@@ -23,7 +23,7 @@ public class FingerBattle extends JFrame {
         add(loadInterface);
     }
 
-    private void initComponents(User user) {
+    private void initComponents() {
         gameInterface = new GI(this);
 
         initPanel();
@@ -37,6 +37,7 @@ public class FingerBattle extends JFrame {
     }
 
     private void initFrame() {
+        setTitle(user.getUsername());
         setLayout(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);

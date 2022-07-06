@@ -1,5 +1,6 @@
 package view;
 
+import constants.Colors;
 import constants.ScreenSize;
 import model.User;
 import service.GIService;
@@ -55,24 +56,28 @@ public class GI extends JPanel {
         match.setFont(new Font("Serif", Font.ITALIC, 24));
         match.setFocusPainted(false);
         match.addActionListener(new GIService(this));
+        match.setBackground(Colors.gi_button);
 
         avatar = new JButton("Custom character");
         avatar.setBounds((int) (width*0.35), (int) (height*0.4), (int) (width*0.3), (int) (height*0.1));
         avatar.setFont(new Font("Serif", Font.ITALIC, 24));
         avatar.setFocusPainted(false);
         avatar.addActionListener(new GIService(this));
+        avatar.setBackground(Colors.gi_button);
 
         setting = new JButton("Setting");
         setting.setBounds((int) (width*0.35), (int) (height*0.55), (int) (width*0.3), (int) (height*0.1));
         setting.setFont(new Font("Serif", Font.ITALIC, 24));
         setting.setFocusPainted(false);
         setting.addActionListener(new GIService(this));
+        setting.setBackground(Colors.gi_button);
 
         quit = new JButton("Quit game");
         quit.setBounds((int) (width*0.35), (int) (height*0.7), (int) (width*0.3), (int) (height*0.1));
         quit.setFont(new Font("Serif", Font.ITALIC, 24));
         quit.setFocusPainted(false);
         quit.addActionListener(new GIService(this));
+        quit.setBackground(Colors.gi_button);
     }
 
     private void initLabels() {
@@ -84,7 +89,7 @@ public class GI extends JPanel {
 
     private void initPanel() {
         setBounds(x, y, width, height);
-        //setBackground(Color.BLACK);
+        setBackground(Colors.gi_bg);
         setLayout(null);
     }
 }

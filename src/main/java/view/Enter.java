@@ -1,6 +1,14 @@
 package view;
 
+import constants.Colors;
+import constants.ScreenSize;
+import org.checkerframework.checker.units.qual.C;
+import org.xml.sax.SAXException;
+
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
+import java.io.IOException;
 import java.net.Socket;
 
 
@@ -17,11 +25,12 @@ public class Enter extends JFrame {
     public static SignIn signin;
     public static SignUp signup;
     //construction function
-    public Enter(Socket socket){
+    public Enter(Socket socket) throws ParserConfigurationException, IOException, SAXException {
         this.player = socket;
         initFrame();
         initPanel();
         addElements();
+
     }
 
     /**
@@ -42,9 +51,9 @@ public class Enter extends JFrame {
      * @author hqvjet
      * @since 2022-06-19 1:06 AM
      */
-    private void initPanel()
-    {
+    private void initPanel() throws ParserConfigurationException, IOException, SAXException {
         int w = getWidth(), h = getHeight();
+
         signin = new SignIn(player, (int) (w*0.25), (int) (h*0.3), (int) (w*0.5), (int) (h*0.4));
 
         signup = new SignUp(player, (int) (w*0.25), (int) (h*0.22), (int) (w*0.5), (int) (h*0.55));
@@ -53,7 +62,6 @@ public class Enter extends JFrame {
     private void addElements(){
         add(signin);
         add(signup);
-
         signup.setVisible(false);
     }
 }

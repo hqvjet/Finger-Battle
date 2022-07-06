@@ -12,6 +12,7 @@ public class Server {
         System.out.println("On administrator permission");
         try {
             serverSocket = new ServerSocket(2);
+            System.out.println(serverSocket.getInetAddress());
         } catch (IOException e) {
             e.printStackTrace();
         }

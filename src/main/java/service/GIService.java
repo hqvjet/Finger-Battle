@@ -40,12 +40,11 @@ public class GIService implements ActionListener {
                 writer.write(Cipher.cipher_INQUEUE);
                 writer.newLine();
                 writer.flush();
-                if(reader.readLine().equals(Cipher.cipher_ALLOW_TO_BATTLE)){
+                while(!reader.readLine().equals(Cipher.cipher_ALLOW_TO_BATTLE))
+                    System.out.println("deo");
 
-                    FF.loadInterface.remove(gameInterface);
-                    System.out.println("go");
-                    FF.loadInterface.add(new Ingame(socket, gameInterface.user));
-                }
+                FF.loadInterface.remove(gameInterface);
+                FF.loadInterface.add(new Ingame(gameInterface, FF.loadInterface, socket, gameInterface.user));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

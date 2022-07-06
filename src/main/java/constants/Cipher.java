@@ -13,4 +13,7 @@ public class Cipher {
     public static final String cipher_ATTACK_SUCCESS = "~attacking_success";
     public static final String cipher_ATTACK_DRAW = "~attacking_draw";
     public static final String cipher_NORMAL = "~normal";
+    public static final String cipher_SELF_ACTION = "~self_action";
+    public static final String cipher_ENEMY_ACTION = "~enemy_action";
+    public static final String cipher_ENDGAME = "~endgame";
 }
